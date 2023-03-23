@@ -1,0 +1,21 @@
+<div class="slider">
+
+ <ng-container *ngFor="let slide of slideService.getSlides(); let sliderIndex = index " >
+  <div class="slide" *ngIf="slideService.getCurrentIndex() === sliderIndex" [ngStyle]="{'background-image': 'url('+slide.url+')'}" (click)="emitSlideIndex(sliderIndex)">
+    <p>{{slide.title +'____'+ sliderIndex}}</p>
+  </div>
+</ng-container>
+
+<div class="arrow-container">
+  <div class="arrow left-arrow" (click)="leftArrowClicked()"> < </div>
+  <div class="arrow right-arrow" (click)="rightArrowClicked()"> > </div>
+</div>
+
+<div class="dots">
+ <div class="dot" (click)="dotClicked(sliderIndex)"  *ngFor="let slide of slideService.getSlides(); let sliderIndex = index " >
+  .
+ </div>
+</div>
+
+
+</div>
