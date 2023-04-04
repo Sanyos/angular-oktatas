@@ -3,6 +3,7 @@ import { RouterModule, Routes } from '@angular/router';
 import { AuthGuardService } from './core/services/guards/auth-guard/auth-guard.service';
 import { HomeComponent } from './feature/home/home.component';
 import { LoginComponent } from './feature/login/login.component';
+import { PostComponent } from './feature/post/post.component';
 import { PostsComponent } from './feature/posts/posts.component';
 
 const routes: Routes = [
@@ -18,6 +19,11 @@ const routes: Routes = [
   {
     path:'posts',
     component:PostsComponent,
+    canActivate: [AuthGuardService]
+  },
+  {
+    path:'post/:id',
+    component:PostComponent,
     canActivate: [AuthGuardService]
   },
   {
