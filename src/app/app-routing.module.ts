@@ -5,6 +5,7 @@ import { HomeComponent } from './feature/home/home.component';
 import { LoginComponent } from './feature/auth/login/login.component';
 import { PostComponent } from './feature/post/post.component';
 import { PostsComponent } from './feature/posts/posts.component';
+import { PostListComponent } from './feature/post-list/post-list.component';
 
 const routes: Routes = [
 
@@ -19,6 +20,11 @@ const routes: Routes = [
   {
     path:'posts',
     component:PostsComponent,
+    canActivate: [AuthGuardService]
+  },
+  {
+    path:'post-list',
+    component:PostListComponent,
     canActivate: [AuthGuardService]
   },
   {

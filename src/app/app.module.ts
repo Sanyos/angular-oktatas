@@ -13,6 +13,8 @@ import { AngularMaterialModule } from './angular-material.module';
 import { TruncatePipe } from './core/pipes/truncate/truncate.pipe';
 import { TagLimitPipe } from './core/pipes/tag-limit/tag-limit.pipe';
 import { AuthModule } from './feature/auth/auth.module';
+import { PostListComponent } from './feature/post-list/post-list.component';
+import { SweetAlert2Module } from '@sweetalert2/ngx-sweetalert2';
 
 @NgModule({
   declarations: [
@@ -21,7 +23,8 @@ import { AuthModule } from './feature/auth/auth.module';
     PostsComponent,
     PostComponent,
     TruncatePipe,
-    TagLimitPipe
+    TagLimitPipe,
+    PostListComponent
   ],
   imports: [
     BrowserModule,
@@ -31,7 +34,8 @@ import { AuthModule } from './feature/auth/auth.module';
     BrowserAnimationsModule,
     AngularMaterialModule,
     FormsModule,
-    AuthModule
+    AuthModule,
+    SweetAlert2Module.forRoot()
   ],
   providers: [],
   bootstrap: [AppComponent]

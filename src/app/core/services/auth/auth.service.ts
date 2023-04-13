@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { Observable } from 'rxjs';
+import { BehaviorSubject, Observable, Subject } from 'rxjs';
 import { LoginApi, LoginResponse } from '../../types/api/login-api.type';
 import { LoginAuth } from '../../types/auth/login-auth.type';
 import { HttpService } from '../http/http.service';
@@ -10,12 +10,28 @@ import { HttpService } from '../http/http.service';
 export class AuthService {
 
   isCompany: boolean = false;
+  private authErrorCount = new BehaviorSubject<number>(0);
+  authErrorCount$ = this.authErrorCount.asObservable();
+
+
   constructor(private httpSerivce: HttpService) { }
 
   login(loginData:LoginAuth):Observable<LoginResponse>{
     this.isCompany = loginData.login_isCompany;
     return this.httpSerivce.postLogin(this.mapLoginDataToLoginApiData(loginData))
   }
+
+
+  increaseErrorCount():void{
+    let nextValue =  this.authErrorCount.value;
+    this.authErrorCount.next(++nextValue);
+  }
+
+  resetErrorCount():void {
+    this.authErrorCount.next(0);
+  }
+
+
 
   initUser(userData:LoginResponse):void{
     localStorage.setItem("token", userData.token);
