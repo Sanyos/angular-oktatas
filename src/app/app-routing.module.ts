@@ -2,7 +2,7 @@ import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 import { AuthGuardService } from './core/services/guards/auth-guard/auth-guard.service';
 import { HomeComponent } from './feature/home/home.component';
-import { LoginComponent } from './feature/login/login.component';
+import { LoginComponent } from './feature/auth/login/login.component';
 import { PostComponent } from './feature/post/post.component';
 import { PostsComponent } from './feature/posts/posts.component';
 
@@ -13,8 +13,8 @@ const routes: Routes = [
     component: HomeComponent
   },
   {
-    path:'login',
-    component:LoginComponent
+    path:'auth',
+    loadChildren:() => import('./feature/auth/auth.module').then(m =>m.AuthModule)
   },
   {
     path:'posts',

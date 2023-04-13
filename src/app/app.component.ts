@@ -15,6 +15,6 @@ export class AppComponent {
     this.router.navigate(['home']);
   }
   navigateToLogin():void{
-    this.router.navigate(['login']);
+    this.router.navigate(['auth','login']);
   }
 }

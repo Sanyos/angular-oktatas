@@ -3,10 +3,10 @@
     {{post.id}}
   </p>
   <p>
-    {{post.title}}
+    {{post.title | uppercase }}
   </p>
   <p>
-    {{post.body}}
+    {{post.body | lowercase}}
   </p>
   <p >
     <span *ngFor="let tag of post.tags" >

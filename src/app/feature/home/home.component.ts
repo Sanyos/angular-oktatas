@@ -8,8 +8,12 @@ import { Component, OnDestroy, OnInit } from '@angular/core';
 export class HomeComponent implements OnInit, OnDestroy{
 
   value = 'Clear me';
+  date:Date = new Date();
+
+
   ngOnInit(): void {
     console.log("HOME INIT");
+    console.log(this.date);
   }
 
   ngOnDestroy(): void {
