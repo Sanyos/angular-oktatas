@@ -6,11 +6,13 @@ import { LoginComponent } from './feature/auth/login/login.component';
 import { PostComponent } from './feature/post/post.component';
 import { PostsComponent } from './feature/posts/posts.component';
 import { PostListComponent } from './feature/post-list/post-list.component';
+import { guard } from './core/services/guards/test';
 
 const routes: Routes = [
 
   {
     path: 'home',
+    title:'Főképernyő',
     component: HomeComponent
   },
   {
@@ -19,8 +21,9 @@ const routes: Routes = [
   },
   {
     path:'posts',
+    title:'Postok!!!!!',
     component:PostsComponent,
-    canActivate: [AuthGuardService]
+    canActivate: [guard]
   },
   {
     path:'post-list',

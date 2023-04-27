@@ -13,12 +13,31 @@ export class AuthService {
   private authErrorCount = new BehaviorSubject<number>(0);
   authErrorCount$ = this.authErrorCount.asObservable();
 
+  private loggedIn = new BehaviorSubject<boolean>(false);
+  loggedIn$ = this.loggedIn.asObservable();
+
+
 
   constructor(private httpSerivce: HttpService) { }
 
+
+  checkLoggedIn(){
+    if(this.isLoggedIn()){
+      this.loggedIn.next(true);
+    }else{
+      this.loggedIn.next(false);
+    }
+  }
+
   login(loginData:LoginAuth):Observable<LoginResponse>{
     this.isCompany = loginData.login_isCompany;
+    this.loggedIn.next(true);
     return this.httpSerivce.postLogin(this.mapLoginDataToLoginApiData(loginData))
+  }
+
+  logout(){
+    localStorage.removeItem('token');
+    this.loggedIn.next(false);
   }
 
 

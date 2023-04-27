@@ -23,11 +23,9 @@ export class LoginComponent {
   constructor(private authSerivce: AuthService, private router: Router, private actRoute: ActivatedRoute){
 
     this.loginForm = new FormGroup({
-
       login_username: new FormControl("kminchelle",[Validators.required]),
       login_password: new FormControl("0lelplR",[Validators.required]),
       login_isCompany: new FormControl(null)
-
     });
   }
 

@@ -12,6 +12,11 @@ export class HomeComponent implements OnInit, OnDestroy{
   date:Date = new Date();
   loggedIn:boolean = false;
 
+
+
+  apiRes = [{c:"cat1"},{c:"cat2"}]
+
+
   @ViewChild('mySwal')
   public readonly mySwal!: SwalComponent;
 
@@ -24,6 +29,9 @@ export class HomeComponent implements OnInit, OnDestroy{
 fire(){
   console.log(this.mySwal);
 }
+
+
+
 
   ngOnDestroy(): void {
     console.log("HOME DESTORY");

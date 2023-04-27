@@ -1,10 +1,11 @@
 
 <div id="header">
   <a [routerLink]="['']" >HOME</a>
-  <a [routerLink]="['auth','login']">Bejelentkezés</a>
+  <a [routerLink]="['auth','login']" *ngIf="!loggedIn">Bejelentkezés</a>
   <span (click)="navigateToHome()"  >HOME</span>
-  <span (click)="navigateToLogin()">Bejelentkezés</span>
+  <span (click)="navigateToLogin()" *ngIf="!loggedIn">Bejelentkezés</span>
   <a [routerLink]="['post-list']">Post lista</a>
+  <span (click)="logout()" *ngIf="loggedIn">Kijelentkezés</span>
 </div>
 
 <router-outlet></router-outlet>
