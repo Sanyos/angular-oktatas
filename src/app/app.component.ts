@@ -18,10 +18,14 @@ export class AppComponent {
  inCompletedTodos$: Observable<Todo[]>;
 
  constructor(private store:Store<{todos:Todo[]}>){
+
+  this.store.dispatch(loadTodos());
+
+
   this.todos$ = this.store.select((state) => state.todos);
   this.completedTodos$ = this.store.select(selectCompleteTodos);
   this.inCompletedTodos$ = this.store.select(selectInCompleteTodos);
-  this.store.dispatch(loadTodos());
+
  }
 
  onSubmit(event:Event):void{
@@ -31,7 +35,6 @@ export class AppComponent {
     title: this.newTodo,
     completed:false
   }
-  console.log("ASDASD");
   this.store.dispatch(addTodo({ todo: newTodo}));
   this.newTodo = '';
 
