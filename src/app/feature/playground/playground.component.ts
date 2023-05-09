@@ -21,4 +21,8 @@ export class PlaygroundComponent implements OnInit {
     })
   }
 
+  restartGame():void{
+    this.gameService.generatePlayground();
+  }
+
 }
