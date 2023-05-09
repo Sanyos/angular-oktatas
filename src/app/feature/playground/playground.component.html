@@ -7,6 +7,8 @@
     (coords)="getCoords($event)"
     ></app-field>
   </ng-container>
+
+  <div *ngIf="errorMessage.length">{{errorMessage}}</div>
 </div>
 
 
