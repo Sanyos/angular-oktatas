@@ -1,6 +1,5 @@
 import { Component, OnInit } from '@angular/core';
 import { GameService } from 'src/app/core/services/game/game.service';
-import { Coords } from 'src/app/core/types/coords.type';
 
 @Component({
   selector: 'app-playground',
@@ -22,7 +21,4 @@ export class PlaygroundComponent implements OnInit {
     })
   }
 
-  getCoords(coords:Coords){
-    this.gameService.fieldPressed(coords.i,coords.j);
-  }
 }

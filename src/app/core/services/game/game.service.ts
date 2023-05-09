@@ -26,17 +26,19 @@ export class GameService {
     }
   }
 
-  fieldPressed(i:number, j:number):void{
+  fieldPressed(i:number, j:number):number{
+    let status = this.activePlayerIndex;
     if (this.game[i][j] === 0) {
       this.game[i][j] = this.activePlayerIndex;
+      this.errorMessage.next("");
       this.switchPlayer();
-      this.errorMessage.next('');
-
       console.log(this.game);
-    } else {
-      this.errorMessage.next('Nem írhatod felül a másik játékos mezőjét');
-      console.log('Nem írhatod felül a másik játékos mezőjét');
+    }else{
+      this.errorMessage.next("Nem kattinthatsz erre a mezőre!");
+      console.log('Hibás kattintás');
+      status = -1;
     }
+    return status;
   }
 
   switchPlayer(){
