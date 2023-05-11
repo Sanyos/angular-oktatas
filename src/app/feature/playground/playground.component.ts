@@ -10,19 +10,25 @@ export class PlaygroundComponent implements OnInit {
 
   numbers:number[] = [];
   errorMessage: string = '';
+  rowCount: number = 3;
+  rowBreaksAfterColumnCount: number = 3;
 
   constructor(private gameService: GameService){}
 
   ngOnInit(){
-    this.numbers = Array(this.gameService.fieldCount).fill(1);
-    this.gameService.generatePlayground();
+    this.gameService.generatePlayground(this.rowCount);
     this.gameService.errorMessage$.subscribe((res) => {
       this.errorMessage = res;
+    });
+    this.gameService.fieldCount$.subscribe((res:number)=>{
+      this.numbers = Array(res).fill(1);
+      this.rowBreaksAfterColumnCount = Math.sqrt(res)
+
     })
   }
 
-  restartGame():void{
-    this.gameService.generatePlayground();
+  newGame():void{
+    this.gameService.generatePlayground(this.rowCount);
   }
 
 }

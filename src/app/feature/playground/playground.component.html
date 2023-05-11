@@ -1,8 +1,12 @@
 
 <div id="playground">
+
+  <input [(ngModel)]="rowCount" type="number">
+  <button (click)="newGame()">Új játék</button>
+
   <ng-container *ngFor="let number of numbers; let i = index">
     <app-field
-    [lineBreakNeeded]="i%3===0"
+    [lineBreakNeeded]="i%rowBreaksAfterColumnCount===0"
     [index]="i"
     ></app-field>
   </ng-container>
