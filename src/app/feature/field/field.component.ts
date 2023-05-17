@@ -20,7 +20,8 @@ export class FieldComponent implements OnInit {
 
   ngOnInit(){
     this.gameService.fieldCount$.subscribe((res:number)=>{
-      this.rowCount = Math.sqrt(res)
+      this.rowCount = Math.sqrt(res);
+      this.fieldStatus = 0;
     })
   }
 

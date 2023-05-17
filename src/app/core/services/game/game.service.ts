@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { BehaviorSubject } from 'rxjs';
+import { BehaviorSubject, Subject } from 'rxjs';
 
 @Injectable({
   providedIn: 'root'
@@ -19,12 +19,18 @@ export class GameService {
   private fieldCount = new BehaviorSubject<number>(9);
   fieldCount$ = this.fieldCount.asObservable();
 
+  private gameId = new Subject<number>();
+  gameId$ = this.gameId.asObservable();
+
   countToWin:number = 3;
+
+  winner: number = 0;
 
   constructor() { }
 
   generatePlayground(rowCount:number):void{
     this.fieldCount.next(rowCount*rowCount);
+    this.winner = 0;
     this.game = [];
     this.activePlayerIndex = 1;
     for(let i=0; i<rowCount; i++){
@@ -33,30 +39,38 @@ export class GameService {
         this.game[i].push(0);
       }
     }
+    this.gameId.next(Math.floor(Math.random()*100000000));
   }
 
   fieldPressed(i:number, j:number):number{
-    let status = this.activePlayerIndex;
-    console.log("coords: ",i,",",j);
-    if (this.game[i][j] === 0) {
-      this.game[i][j] = this.activePlayerIndex;
-      this.errorMessage.next("");
-      this.switchPlayer();
-      const winner = this.checkifWon(i,j);
-      if(winner){
-        console.log("A nyertes a ",winner, ". számú játékos");
-        alert("A nyertes a "+winner+ ". számú játékos");
-      }else if(this.checkIfFinished()){
-        console.log("Döntetlen");
-        alert("Döntetlen");
+    let status;
+    if(!this.winner){
+      status = this.activePlayerIndex;
+      console.log("coords: ",i,",",j);
+      if (this.game[i][j] === 0) {
+        this.game[i][j] = this.activePlayerIndex;
+        this.errorMessage.next("");
+        this.switchPlayer();
+        const winner = this.checkifWon(i,j);
+        if(winner){
+          console.log("A nyertes a ",winner, ". számú játékos");
+          alert("A nyertes a "+winner+ ". számú játékos");
+          this.winner = winner;
+        }else if(this.checkIfFinished()){
+          console.log("Döntetlen");
+          alert("Döntetlen");
+        }
+        console.log(this.game);
+      }else{
+        this.errorMessage.next("Nem kattinthatsz erre a mezőre!");
+        console.log('Hibás kattintás');
+        status = -1;
       }
-      console.log(this.game);
     }else{
-      this.errorMessage.next("Nem kattinthatsz erre a mezőre!");
-      console.log('Hibás kattintás');
       status = -1;
     }
     return status;
+
   }
 
     checkifWon(oldRow:number, oldCol:number):number{
