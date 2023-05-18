@@ -3,7 +3,7 @@ import { GameService } from 'src/app/core/services/game/game.service';
 
 @Component({
   selector: 'app-playground',
-  templateUrl: './playground.component.html',
+ templateUrl: './playground.component.html',
   styleUrls: ['./playground.component.scss']
 })
 export class PlaygroundComponent implements OnInit {
@@ -12,11 +12,15 @@ export class PlaygroundComponent implements OnInit {
   errorMessage: string = '';
   rowCount: number = 3;
   rowBreaksAfterColumnCount: number = 3;
+  lobbyId: number = 0;
+  game:number[][] = []
 
-  constructor(private gameService: GameService){}
+  constructor(private gameService: GameService) {}
 
   ngOnInit(){
-    this.gameService.generatePlayground(this.rowCount);
+    this.gameService.game$.subscribe(res=>{
+      this.game = res;
+    })
     this.gameService.errorMessage$.subscribe((res) => {
       this.errorMessage = res;
     });
@@ -28,7 +32,11 @@ export class PlaygroundComponent implements OnInit {
   }
 
   newGame():void{
-    this.gameService.generatePlayground(this.rowCount);
+    this.lobbyId = this.gameService.generatePlayground(this.rowCount);
+  }
+
+  connectToLobby():void{
+    this.gameService.joinLobby(this.lobbyId);
   }
 
 }
