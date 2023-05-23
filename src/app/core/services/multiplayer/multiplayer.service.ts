@@ -28,9 +28,11 @@ export class MultiplayerService implements IMultiplayerService {
 
   createLobby(id: number, game: number[][]): void {
     let lobbyRef = this.db.object(id.toString());
-    lobbyRef.set({ game: JSON.stringify(game), winner: 0 });
+    lobbyRef.set({ game: JSON.stringify(game), winner: 0, player2Joined: false });
   }
-  joinLobby(id: number): any {
+  joinLobby(id: number, player2Joined:boolean = false): any {
+    let lobbyRef = this.db.object(id.toString());
+    lobbyRef.update({player2Joined: player2Joined});
     return this.db.list(id.toString()).valueChanges();
   }
   updateGameState(id: number, game: number[][]): void {

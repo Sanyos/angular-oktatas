@@ -10,7 +10,10 @@ export class GameService {
 
   gameSubj: BehaviorSubject<number[][]> = new BehaviorSubject([[1]]);
   game$ = this.gameSubj.asObservable();
-  activePlayerIndex:number = 2;
+  playableGameSubj: BehaviorSubject<boolean> = new BehaviorSubject(false);
+  playableGame$ = this.playableGameSubj.asObservable();
+
+  activePlayerIndex:number = 1;
 
   private errorMessage = new BehaviorSubject<string>('');
   errorMessage$ = this.errorMessage.asObservable();
@@ -26,16 +29,40 @@ export class GameService {
   winner: number = 0;
   gameId: number = 0;
 
+  myPlayerIndex: number = 1;
+
 
   constructor(private multiplayer: MultiplayerService) {
+    this.game$.subscribe((res)=>{
+      if(res.length>2){
+        console.log(res);
+        let player1Count = 0;
+        let player2Count = 0;
+        for(let i = 0; i<res.length; i++){
+          for(let j = 0; j<res[i].length; j++){
+            if(res[i][j] === 1){
+              player1Count++;
+            }
+            else if(res[i][j]===2){
+              player2Count++;
+            }
+          }
+        }
+
+        this.activePlayerIndex = (player1Count === player2Count)? 1:2;
+        console.log(this.activePlayerIndex);
+
+      }
+    })
   }
 
 
   generatePlayground(rowCount:number):number{
+
     this.fieldCount.next(rowCount*rowCount);
     this.winner = 0;
     let game: number[][] = [];
-    this.activePlayerIndex = 2;
+    this.activePlayerIndex = 1;
     for(let i=0; i<rowCount; i++){
       game.push([]);
       for(let j=0; j<rowCount; j++){
@@ -45,27 +72,24 @@ export class GameService {
     this.gameSubj.next(game);
     this.gameId = Math.floor(Math.random()*100000000);
     this.multiplayer.createLobby(this.gameId, game);
-    this.multiplayer.joinLobby(this.gameId).subscribe((res:any)=>{
-      this.gameSubj.next(JSON.parse(res[0]));
-      this.switchPlayer();
-      console.log(res[0]);
-    });
+    this.joinLobby(this.gameId, 1)
     return this.gameId;
   }
 
 
-  joinLobby(lobbyId:number){
+  joinLobby(lobbyId:number,myPlayerIndex: number, playableGame:boolean = false ){
     this.gameId = lobbyId;
-    this.multiplayer.joinLobby(this.gameId).subscribe((res:any)=>{
+    this.myPlayerIndex = myPlayerIndex;
+    this.multiplayer.joinLobby(this.gameId, playableGame).subscribe((res:any)=>{
+      console.log("res");
+      this.playableGameSubj.next(JSON.parse(res[1]));
       this.gameSubj.next(JSON.parse(res[0]));
-      this.switchPlayer();
-      console.log(res[0]);
     });
   }
 
   async fieldPressed(i:number, j:number):Promise<number>{
     let status;
-    if(!this.winner){
+    if(!this.winner && this.myPlayerIndex === this.activePlayerIndex){
       status = this.activePlayerIndex;
       console.log("coords: ",i,",",j);
 
@@ -164,11 +188,7 @@ export class GameService {
     return nextPlayer;
   }
   switchPlayer():void{
-    if(this.activePlayerIndex === 1){
-      this.activePlayerIndex = 2;
-    }else{
-      this.activePlayerIndex = 1;
-    }
-    console.log(this.activePlayerIndex);
+
+    console.log("active player: ", this.activePlayerIndex);
   }
 }

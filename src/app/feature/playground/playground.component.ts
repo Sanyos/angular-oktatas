@@ -11,11 +11,11 @@ export class PlaygroundComponent implements OnInit {
   numbers:number[] = [];
   errorMessage: string = '';
   rowCount: number = 3;
-  rowBreaksAfterColumnCount: number = 3;
   lobbyId: number = 0;
   game:number[][] = []
+  playableGame$ = this.gameService.playableGame$;
 
-  constructor(private gameService: GameService) {}
+  constructor(public gameService: GameService) {}
 
   ngOnInit(){
     this.gameService.game$.subscribe(res=>{
@@ -24,11 +24,6 @@ export class PlaygroundComponent implements OnInit {
     this.gameService.errorMessage$.subscribe((res) => {
       this.errorMessage = res;
     });
-    this.gameService.fieldCount$.subscribe((res:number)=>{
-      this.numbers = Array(res).fill(1);
-      this.rowBreaksAfterColumnCount = Math.sqrt(res)
-
-    })
   }
 
   newGame():void{
@@ -36,7 +31,7 @@ export class PlaygroundComponent implements OnInit {
   }
 
   connectToLobby():void{
-    this.gameService.joinLobby(this.lobbyId);
+    this.gameService.joinLobby(this.lobbyId,2,true);
   }
 
 }

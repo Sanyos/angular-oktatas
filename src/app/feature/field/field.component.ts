@@ -9,30 +9,27 @@ import { Coords } from 'src/app/core/types/coords.type';
 })
 export class FieldComponent implements OnInit {
 
+  @Input() fieldCoords: Coords = {i:0,j:0};
   @Input() lineBreakNeeded:boolean = false;
-  @Input() index:number = 0;
-  @Output() coords: EventEmitter<Coords> = new EventEmitter();
   @Input() fieldStatus:number = 0;
-  rowCount:number = 3;
+  @Input() playableGame: boolean = false;
+  @Output() coords: EventEmitter<Coords> = new EventEmitter();
+
 
   constructor(private gameService: GameService){}
 
-  ngOnInit(){
-    this.gameService.fieldCount$.subscribe((res:number)=>{
-      this.rowCount = Math.sqrt(res);
-    })
-  }
+  ngOnInit(){}
 
    async fieldClicked(){
-    const coords:Coords = {
-      i:Math.floor(this.index/this.rowCount),
-      j:this.index%this.rowCount
-    };
-    const status = await this.gameService.fieldPressed(coords.i,coords.j);
-    if(status>0){
-      this.fieldStatus = status;
+    if(this.playableGame){
+      const status = await this.gameService.fieldPressed(this.fieldCoords.i,this.fieldCoords.j);
+      if(status>0){
+        this.fieldStatus = status;
+      }
+      console.log(this.fieldCoords, this.lineBreakNeeded);
+      this.coords.emit(this.fieldCoords);
     }
-    this.coords.emit(coords);
+
   }
 
 }

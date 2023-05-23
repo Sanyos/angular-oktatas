@@ -9,15 +9,22 @@
 
   <p>Szoba azonosító: <span *ngIf="lobbyId > 0">{{lobbyId}}</span></p>
 
-  <ng-container *ngIf="lobbyId>0">
-    <ng-container *ngFor="let number of numbers; let i = index">
+  <p *ngIf="game.length>2">A soron következő játékos a: {{gameService.activePlayerIndex}}</p>
+
+<ng-container *ngIf="game.length>2">
+  <ng-container *ngFor="let row of game; let i = index" >
+    <ng-container *ngFor="let field of row; let j = index">
       <app-field
-      [lineBreakNeeded]="i%rowBreaksAfterColumnCount===0"
-      [index]="i"
-      [fieldStatus]="0"
-      ></app-field>
+      [fieldStatus]="field"
+      [fieldCoords]="{i:i,j:j}"
+      [lineBreakNeeded]="j+1 === row.length"
+      [playableGame] = "(playableGame$ | async) || false"
+      >
+      </app-field>
     </ng-container>
   </ng-container>
+</ng-container>
+
 
 
   <div *ngIf="errorMessage.length">{{errorMessage}}</div>
