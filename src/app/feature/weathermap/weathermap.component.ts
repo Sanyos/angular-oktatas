@@ -10,7 +10,9 @@ import { Coords } from 'src/app/shared/types/coords.type';
 export class WeathermapComponent implements OnInit {
 
 
-  userLocation: Coords = {latitude:0,longitude:0};
+  userLocation: Coords = {lat:0,lon:0};
+
+  currentWeather: any = null;
 
   constructor(private readonly owms: OpenWeatherMapService){}
 
@@ -24,9 +26,10 @@ export class WeathermapComponent implements OnInit {
 
       navigator.geolocation.getCurrentPosition(
         (position) =>{
-          this.userLocation.latitude = position.coords.latitude;
-          this.userLocation.longitude = position.coords.longitude;
+          this.userLocation.lat = position.coords.latitude;
+          this.userLocation.lon = position.coords.longitude;
           this.fetchWeatherData();
+         //OPEN MAP
         },
         (error)=>{
           console.log(error);
@@ -38,7 +41,10 @@ export class WeathermapComponent implements OnInit {
   }
 
   private fetchWeatherData():void{
-    this.owms.getWeatherData(this.userLocation);
+    this.owms.getWeatherData(this.userLocation).subscribe((weather)=>{
+      this.currentWeather = weather;
+      console.log(weather);
+    });
   }
 
 }
