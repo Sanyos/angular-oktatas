@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { OpenWeatherMapService } from 'src/app/core/services/open-weather-map/open-weather-map.service';
-import { Coords } from 'src/app/shared/types/coords.type';
+import { WeatherData } from 'src/app/shared/types/weatherData.type';
 
 @Component({
   selector: 'app-weathermap',
@@ -10,9 +10,11 @@ import { Coords } from 'src/app/shared/types/coords.type';
 export class WeathermapComponent implements OnInit {
 
 
-  userLocation: Coords = {lat:0,lon:0};
+  currentWeather: WeatherData |undefined;
 
-  currentWeather: any = null;
+  center: google.maps.LatLngLiteral = { lat: 0, lng: 0 };
+  markerOptions: google.maps.MarkerOptions = {};
+  markerPosition: google.maps.LatLngLiteral = { lat: 0, lng: 0 };
 
   constructor(private readonly owms: OpenWeatherMapService){}
 
@@ -26,10 +28,9 @@ export class WeathermapComponent implements OnInit {
 
       navigator.geolocation.getCurrentPosition(
         (position) =>{
-          this.userLocation.lat = position.coords.latitude;
-          this.userLocation.lon = position.coords.longitude;
-          this.fetchWeatherData();
-         //OPEN MAP
+          this.placePin(position.coords.latitude,position.coords.longitude);
+          this.centerMap(position.coords.latitude, position.coords.longitude);
+          this.fetchWeatherData(position.coords.latitude,position.coords.longitude);
         },
         (error)=>{
           console.log(error);
@@ -40,11 +41,31 @@ export class WeathermapComponent implements OnInit {
     }
   }
 
-  private fetchWeatherData():void{
-    this.owms.getWeatherData(this.userLocation).subscribe((weather)=>{
+  private fetchWeatherData(lat:number, lon:number):void{
+    this.owms.getWeatherData({lat,lon}).subscribe((weather)=>{
       this.currentWeather = weather;
       console.log(weather);
     });
+  }
+
+
+  onMapClick(event: any) {
+    this.placePin(event.latLng.lat(),event.latLng.lng());
+    this.fetchWeatherData(event.latLng.lat(),event.latLng.lng());
+  }
+
+  private placePin(lat:number,lon:number){
+    this.markerPosition = {
+      lat: lat,
+      lng: lon,
+    };
+    this.markerOptions = {
+      position: this.markerPosition,
+    };
+  }
+
+  private centerMap(lat:number, lng:number){
+    this.center = {lat,lng}
   }
 
 }

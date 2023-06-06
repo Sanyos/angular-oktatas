@@ -1,1 +1,8 @@
 <p>weathermap works!</p>
+<google-map
+  [center]="center"
+  [options]="{ zoom: 15, mapTypeId: 'roadmap' }"
+  (mapClick)="onMapClick($event)"
+>
+  <map-marker [options]="markerOptions"></map-marker>
+</google-map>

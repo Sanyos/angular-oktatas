@@ -3,19 +3,26 @@ import { Coords } from 'src/app/shared/types/coords.type';
 import {HttpClient, HttpParams} from '@angular/common/http'
 import { Observable } from 'rxjs';
 import { environment } from 'src/environments/environment';
+import { MockService } from '../mock/mock.service';
+import { WeatherData } from 'src/app/shared/types/weatherData.type';
 
 @Injectable({
   providedIn: 'root'
 })
 export class HttpService {
 
-  constructor(private readonly http: HttpClient) { }
+  constructor(private readonly http: HttpClient, private readonly mock: MockService) { }
 
 
-  getWeatherData(coords:Coords):Observable<any>{
+  getWeatherData(coords:Coords):Observable<WeatherData>{
     let data:any = coords;
     data['exclude'] = "hourly,daily,minutely";
-    return this.getRequest(environment.weatherAPI.apiUrl+environment.weatherAPI.endpoints.getCurrentWeather,true, data);
+    if(environment.weatherAPI.mockAPI){
+      return this.mock.mockWeatherData();
+    }else{
+      return this.getRequest(environment.weatherAPI.apiUrl+environment.weatherAPI.endpoints.getCurrentWeather,true, data);
+    }
+
   }
 
 
