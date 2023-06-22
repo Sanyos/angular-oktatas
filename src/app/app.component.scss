@@ -1,0 +1,83 @@
+//BEM MODEL
+
+$c: ".button";
+
+
+#{$c}{
+  border:1px solid;
+  margin: 15px;
+  cursor: pointer;
+
+  #{$c}n__icon{
+    width: 20px;
+    height: 20px;
+  }
+  #{$c}__label{
+    color: green;
+    text-align: center;
+  }
+
+
+  &--blue{
+    background-color: blue;
+  }
+  &--red{
+    background-color: red;
+  }
+}
+
+// foreach
+
+$login: '.social-login-button';
+$sites: facebook, google, linkedin;
+$siteColors: (
+  facebook: blue,
+  google: red,
+  linkedin: lightblue
+);
+
+
+
+
+#{$login}{
+  border:1px solid;
+  margin: 15px;
+  cursor: pointer;
+
+  @each $site in $sites{
+    &--#{$site}{
+      background-color: map-get($siteColors, $site );
+    }
+  }
+}
+
+
+//PLACEHOLDER
+
+%buttonbg {
+  border: 1px solid black;
+  background-color: lightgray;
+  box-shadow: 0 5px 10px 0 #d0d0d0;
+}
+
+
+//default
+$color: green !default;
+
+.button{
+
+  $color: blue;
+  @extend %buttonbg;
+  &--error{
+    $color: red;
+    color: $color;
+    border-color:$color;
+  }
+  &--success{
+    color: $color;
+    border-color:$color;
+  }
+
+}
+
+
