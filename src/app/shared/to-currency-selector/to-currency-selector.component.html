@@ -1,0 +1,7 @@
+<form [formGroup]="currencyForm">
+  <label>{{label}}</label>
+  <br>
+  <select formControlName="currency" class="select">
+  <option *ngFor="let currency of currencies" [value]="currency.symbol">{{currency.name}}</option>
+  </select>
+</form>
