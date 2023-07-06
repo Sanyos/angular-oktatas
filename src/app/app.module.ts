@@ -12,7 +12,9 @@ import { CurrencyChangeComponent } from './feature/main-page/component/currency-
 import { CurrencyRateComponent } from './feature/main-page/component/currency-rate/currency-rate.component';
 import { BarChartComponent } from './shared/bar-chart/bar-chart.component';
 import { SecondPageComponent } from './feature/second-page/second-page.component';
-import { ToCurrencySelectorComponent } from './shared/to-currency-selector/to-currency-selector.component'
+import { ToCurrencySelectorComponent } from './shared/to-currency-selector/to-currency-selector.component';
+import { CurrencyStatComponent } from './feature/main-page/component/currency-stat/currency-stat.component';
+import { LineChartComponent } from './shared/line-chart/line-chart.component'
 
 @NgModule({
   declarations: [
@@ -24,6 +26,8 @@ import { ToCurrencySelectorComponent } from './shared/to-currency-selector/to-cu
     BarChartComponent,
     SecondPageComponent,
     ToCurrencySelectorComponent,
+    CurrencyStatComponent,
+    LineChartComponent,
   ],
   imports: [
     BrowserModule,

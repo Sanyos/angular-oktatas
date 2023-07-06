@@ -2,6 +2,7 @@ import { Injectable } from '@angular/core';
 import { HttpService } from '../http/http.service';
 import { BehaviorSubject, Subject } from 'rxjs';
 import { Currency } from '../../types/currency.type';
+import { Stats } from '../../types/stats.type';
 
 @Injectable({
   providedIn: 'root'
@@ -51,9 +52,13 @@ export class ExchangeService {
 
      this.stats.next(statDefault);
 
+     let tmp = statDefault;
+
      dates.forEach(date=>{
-      this.http.getStats(date, toCurrency.symbol).subscribe(res=>{
-        console.log(res);
+      this.http.getStats(date, toCurrency.symbol).subscribe((res:Stats)=>{
+
+        tmp[res.date] = res.rates[toCurrency.symbol]
+        this.stats.next(tmp);
       });
      });
 
